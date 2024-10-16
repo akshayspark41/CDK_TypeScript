@@ -22,10 +22,10 @@ export class RdsStack extends cdk.Stack {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS, 
       },
       multiAz: true, 
-      allocatedStorage: 20, // Minimum storage in GB
-      databaseName: 'MyDatabase', // Change this to your preferred database name
-      credentials: rds.Credentials.fromGeneratedSecret('admin'), // Generates a secret for the admin user
-      removalPolicy: cdk.RemovalPolicy.DESTROY, // Change this to RETAIN for production
+      allocatedStorage: 20, 
+      databaseName: 'MyDatabase', 
+      credentials: rds.Credentials.fromGeneratedSecret('admin'), 
+      removalPolicy: cdk.RemovalPolicy.DESTROY, 
     });
   }
 }
