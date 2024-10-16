@@ -1,0 +1,28 @@
+{
+  "name": "cdk-app",
+  "version": "0.1.0",
+  "bin": {
+    "cdk-project": "bin/cdk-app.ts"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.162.1 ",
+    "constructs": "^10.4.2" 
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3", 
+    "ts-node": "^10.9.2",   
+    "@types/node": "^22.7.5" 
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
