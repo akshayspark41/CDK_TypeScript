@@ -23,7 +23,7 @@ export class RdsStack extends cdk.Stack {
       },
       multiAz: true, 
       allocatedStorage: 20, 
-      databaseName: 'MyDatabase', 
+      databaseName: 'database-1', 
       credentials: rds.Credentials.fromGeneratedSecret('admin'), 
       removalPolicy: cdk.RemovalPolicy.DESTROY, 
     });
