@@ -21,6 +21,13 @@ export class Ec2Stack extends cdk.Stack {
         vpcSubnets: {
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
         },
+        userData: ec2.UserData.custom(`
+          #!/bin/bash
+          yum update -y
+          amazon-linux-extras install nginx1 -y
+          systemctl start nginx
+          systemctl enable nginx
+        `),
       }),
       new ec2.Instance(this, 'Instance2', {
         vpc: props.vpc,
@@ -29,6 +36,13 @@ export class Ec2Stack extends cdk.Stack {
         vpcSubnets: {
           subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
         },
+        userData: ec2.UserData.custom(`
+          #!/bin/bash
+          yum update -y
+          amazon-linux-extras install nginx1 -y
+          systemctl start nginx
+          systemctl enable nginx
+        `),
       }),
     ];
   }
