@@ -14,7 +14,7 @@ export class RdsStack extends cdk.Stack {
     // Create RDS instance
     new rds.DatabaseCluster(this, 'MyAuroraCluster', {
       engine: rds.DatabaseClusterEngine.auroraMysql({
-      version: rds.AuroraMysqlEngineVersion.VER_3_01_0,
+      version: rds.AuroraMysqlEngineVersion.VER_3_05_2,
       }),
       instanceProps: {
       vpc: props.vpc,
