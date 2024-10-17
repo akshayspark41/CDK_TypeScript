@@ -12,20 +12,21 @@ export class RdsStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create RDS instance
-    new rds.DatabaseInstance(this, 'MyRdsInstance', {
-      vpc: props.vpc,
-      engine: rds.DatabaseInstanceEngine.mysql({
-        version: rds.MysqlEngineVersion.VER_8_0_32,
+    new rds.DatabaseCluster(this, 'MyAuroraCluster', {
+      engine: rds.DatabaseClusterEngine.auroraMysql({
+      version: rds.AuroraMysqlEngineVersion.VER_3_01_0,
       }),
+      instanceProps: {
+      vpc: props.vpc,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS, 
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
-      multiAz: true, 
-      allocatedStorage: 20, 
-      databaseName: 'database-1', 
-      credentials: rds.Credentials.fromGeneratedSecret('admin'), 
-      removalPolicy: cdk.RemovalPolicy.DESTROY, 
+      },
+      instances: 2, 
+      defaultDatabaseName: 'database-1',
+      credentials: rds.Credentials.fromGeneratedSecret('admin'),
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
   }
 }
