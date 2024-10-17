@@ -28,6 +28,31 @@ export class VpcStack extends cdk.Stack {
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
         },
       ],
+      natGateways: 1,
+    });
+    // Create a NAT Gateway in the public subnet
+    const natGateway = new ec2.CfnNatGateway(this, 'NatGateway', {
+      subnetId: this.vpc.publicSubnets[0].subnetId,
+      allocationId: new ec2.CfnEIP(this, 'EIP', {}).attrAllocationId,
+    });
+
+    // Create a route table for the private subnets
+    const privateRouteTable = new ec2.CfnRouteTable(this, 'PrivateRouteTable', {
+      vpcId: this.vpc.vpcId,
+    });
+
+    // Create a route in the route table that directs traffic to the NAT Gateway
+    new ec2.CfnRoute(this, 'PrivateRoute', {
+      routeTableId: privateRouteTable.ref,
+      destinationCidrBlock: '0.0.0.0/0',
+      natGatewayId: natGateway.ref,
+    });
+    
+    this.vpc.privateSubnets.forEach((subnet, index) => {
+      new ec2.CfnSubnetRouteTableAssociation(this, `PrivateSubnetRouteTableAssociation${index}`, {
+        subnetId: subnet.subnetId,
+        routeTableId: privateRouteTable.ref,
+      });
     });
   }
 }
