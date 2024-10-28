@@ -14,7 +14,7 @@ export class Ec2Stack extends cdk.Stack {
 
     // Create EC2 instances
     this.ec2Instances = [
-      new ec2.Instance(this, 'Instance1', {
+      new ec2.Instance(this, 'Sparkworks-HA-Dev-Instance1', {
         vpc: props.vpc,
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
         machineImage: new ec2.AmazonLinuxImage(),
@@ -29,7 +29,7 @@ export class Ec2Stack extends cdk.Stack {
           systemctl enable nginx
         `),
       }),
-      new ec2.Instance(this, 'Instance2', {
+      new ec2.Instance(this, 'Sparkworks-HA-Dev-Instance2', {
         vpc: props.vpc,
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
         machineImage: new ec2.AmazonLinuxImage(),

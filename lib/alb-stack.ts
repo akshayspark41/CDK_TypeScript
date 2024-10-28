@@ -14,17 +14,17 @@ export class AlbStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create the ALB
-    const lb = new elbv2.ApplicationLoadBalancer(this, 'MyALB', {
+    const lb = new elbv2.ApplicationLoadBalancer(this, 'Sparkworks-HA-Dev-ALB', {
       vpc: props.vpc,
       internetFacing: true,
     });
 
-    const listener = lb.addListener('Listener', {
+    const listener = lb.addListener('Sparkworks-HA-Dev-Listener', {
       port: 80,
       open: true,
     });
 
-    const targetGroup = new elbv2.ApplicationTargetGroup(this, 'MyTargetGroup', {
+    const targetGroup = new elbv2.ApplicationTargetGroup(this, 'SSparkworks-HA-Dev-TargetGroup', {
       vpc: props.vpc,
       port: 80,
       protocol: elbv2.ApplicationProtocol.HTTP,
@@ -36,12 +36,12 @@ export class AlbStack extends cdk.Stack {
       targetGroup.addTarget(new elbv2_targets.InstanceTarget(instance));
     });
 
-    listener.addTargetGroups('TargetGroupAttachment', {
+    listener.addTargetGroups('Sparkworks-HA-Dev-TargetGroupAttachment', {
       targetGroups: [targetGroup],
     });
 
     // Output the ALB DNS name
-    new cdk.CfnOutput(this, 'LoadBalancerDNS', {
+    new cdk.CfnOutput(this, 'Sparkworks-HA-Dev-LoadBalancerDNS', {
       value: lb.loadBalancerDnsName,
     });
   }

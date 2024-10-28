@@ -12,7 +12,7 @@ export class RdsStack extends cdk.Stack {
     super(scope, id, props);
 
     // Create RDS instance
-    new rds.DatabaseCluster(this, 'MyAuroraCluster', {
+    new rds.DatabaseCluster(this, 'Sparkworks-HA-AuroraCluster', {
       engine: rds.DatabaseClusterEngine.auroraMysql({
         version: rds.AuroraMysqlEngineVersion.VER_3_05_2,
       }),

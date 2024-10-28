@@ -8,7 +8,7 @@ export class VpcStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    this.vpc = new ec2.Vpc(this, 'AppVpc', {
+    this.vpc = new ec2.Vpc(this, 'Sparkworks-HA-Dev-AppVpc', {
       maxAzs: 3, 
       ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
       subnetConfiguration: [
@@ -31,25 +31,25 @@ export class VpcStack extends cdk.Stack {
       natGateways: 1,
     });
     // Create a NAT Gateway in the public subnet
-    const natGateway = new ec2.CfnNatGateway(this, 'NatGateway', {
+    const natGateway = new ec2.CfnNatGateway(this, 'Sparkworks-HA-NatGateway', {
       subnetId: this.vpc.publicSubnets[0].subnetId,
       allocationId: new ec2.CfnEIP(this, 'EIP', {}).attrAllocationId,
     });
 
     // Create a route table for the private subnets
-    const privateRouteTable = new ec2.CfnRouteTable(this, 'PrivateRouteTable', {
+    const privateRouteTable = new ec2.CfnRouteTable(this, 'Sparkworks-HA-PrivateRouteTable', {
       vpcId: this.vpc.vpcId,
     });
 
     // Create a route in the route table that directs traffic to the NAT Gateway
-    new ec2.CfnRoute(this, 'PrivateRoute', {
+    new ec2.CfnRoute(this, 'Sparkworks-HA-PrivateRoute', {
       routeTableId: privateRouteTable.ref,
       destinationCidrBlock: '0.0.0.0/0',
       natGatewayId: natGateway.ref,
     });
     
     this.vpc.privateSubnets.forEach((subnet, index) => {
-      new ec2.CfnSubnetRouteTableAssociation(this, `PrivateSubnetRouteTableAssociation${index}`, {
+      new ec2.CfnSubnetRouteTableAssociation(this, `Sparkworks-HA-PrivateSubnetRouteTableAssociation${index}`, {
         subnetId: subnet.subnetId,
         routeTableId: privateRouteTable.ref,
       });
